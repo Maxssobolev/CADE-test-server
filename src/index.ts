@@ -9,6 +9,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
+      'https://cade-test-maxssobolev.vercel.app',
       '*'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

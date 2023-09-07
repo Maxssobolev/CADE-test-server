@@ -1,12 +1,24 @@
 import express from 'express';
+import cors from 'cors';
+import { router } from './routes';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = 8000
 
-app.get('/', (req, res) => {
-  res.send('Привет, мир!');
-});
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    credentials: true,
+  }),
+);
+app.use(express.json());
+app.use('/api', router);
 
-app.listen(port, () => {
-  console.log(`Сервер запущен на порту ${port} в режиме ${process.env.NODE_ENV}`);
+
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT}`);
 });

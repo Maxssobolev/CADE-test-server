@@ -1,32 +1,18 @@
-import path from 'path' 
-import webpack from 'webpack';
-import dotenv from 'dotenv';
+import * as path from 'path';
+import * as webpack from 'webpack';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
 
-interface Env {
-    production?: boolean;
-  }
-  
-const envFile = (env: Env) => {
-  const envFilePath = env.production ? '.env.production' : '.env.development';
-  return dotenv.config({ path: envFilePath }).parsed;
-};
-
-export default (env: Env): webpack.Configuration => ({
+const config: webpack.Configuration = {
   entry: './src/index.ts',
   target: 'node',
   output: {
+    filename: 'server.js',
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js',
   },
   resolve: {
     extensions: ['.ts', '.js'],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(envFile(env)),
-    }),
-  ],
   module: {
     rules: [
       {
@@ -36,4 +22,8 @@ export default (env: Env): webpack.Configuration => ({
       },
     ],
   },
-});
+  plugins: [],
+  devtool: isDevelopment ? 'inline-source-map' : false,
+};
+
+export default config;
